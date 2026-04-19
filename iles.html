@@ -9,8 +9,16 @@
 </head>
 <body>
     <script>
+        // THEME TOGGLE - Initialize immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.classList.add(savedTheme + '-mode');
         document.documentElement.className = 'section-iles';
     </script>
+
+    <!-- DARK/LIGHT MODE TOGGLE -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <!-- NAVIGATION -->
     <nav>
@@ -21,6 +29,53 @@
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb">
+        <a href="index.html">Accueil</a>
+        <span>/</span>
+        <a href="index.html#portfolio">Régions</a>
+        <span>/</span>
+        <span>Îles</span>
+    </div>
+
+    <!-- BACK TO PORTFOLIO BUTTON -->
+    <a href="index.html#portfolio" class="back-to-portfolio">
+        <i class="fas fa-arrow-left"></i> Retour au portfolio
+    </a>
+
+    <script>
+        // THEME TOGGLE HANDLER
+        const themeToggle = document.getElementById('themeToggle');
+        
+        function updateThemeIcon() {
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                themeToggle.title = 'Passer au mode sombre';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                themeToggle.title = 'Passer au mode clair';
+            }
+        }
+        
+        updateThemeIcon();
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light-mode')) {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            }
+            updateThemeIcon();
+        });
+    </script>
 
     <!-- ILES -->
     <section id="iles" class="section">
@@ -48,9 +103,169 @@
             <h3>Prenons contact</h3>
             <p>Je suis ouvert à de nouvelles collaborations et projets passionnants.</p>
             <p><strong>Email:</strong> <a href="mailto:raphael@example.com">raphael@example.com</a> | <strong>Téléphone:</strong> <a href="tel:+33612345678">+33 6 12 34 56 78</a></p>
-            <p style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.95rem;">&copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés</p>
+            <p class="footer-copyright">&copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés</p>
         </div>
     </footer>
+
+    <!-- PDF LIGHTBOX MODAL -->
+    <div class="pdf-modal" id="pdfModal">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <h3 class="pdf-modal-title" id="pdfModalTitle">PDF Viewer</h3>
+                <div class="pdf-modal-actions">
+                    <a href="#" id="pdfDownloadBtn" class="pdf-modal-button">
+                        <i class="fas fa-download"></i> Télécharger
+                    </a>
+                    <button class="pdf-modal-button close-btn" onclick="closePdfModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="pdf-modal-body">
+                <iframe id="pdfModalIframe" class="pdf-modal-iframe"></iframe>
+                <button class="pdf-modal-nav prev" id="prevPdfBtn" onclick="previousPdf()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="pdf-modal-nav next" id="nextPdfBtn" onclick="nextPdf()">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="pdf-modal-footer">
+                <span id="pdfPageInfo">PDF 1 of 1</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // PDF LIGHTBOX HANDLER
+        let allPdfs = [];
+        let currentPdfIndex = 0;
+
+        function openPdfModal(pdfPath, pdfName) {
+            const modal = document.getElementById('pdfModal');
+            const iframe = document.getElementById('pdfModalIframe');
+            const title = document.getElementById('pdfModalTitle');
+            const downloadBtn = document.getElementById('pdfDownloadBtn');
+            const pageInfo = document.getElementById('pdfPageInfo');
+            
+            // Set content
+            iframe.src = pdfPath;
+            title.textContent = pdfName;
+            downloadBtn.href = pdfPath;
+            downloadBtn.download = pdfName;
+            
+            // Update navigation
+            updatePdfNavigation();
+            
+            // Show modal
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePdfModal() {
+            const modal = document.getElementById('pdfModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function previousPdf() {
+            if (currentPdfIndex > 0) {
+                currentPdfIndex--;
+                openPdfModal(allPdfs[currentPdfIndex].path, allPdfs[currentPdfIndex].name);
+            }
+        }
+
+        function nextPdf() {
+            if (currentPdfIndex < allPdfs.length - 1) {
+                currentPdfIndex++;
+                openPdfModal(allPdfs[currentPdfIndex].path, allPdfs[currentPdfIndex].name);
+            }
+        }
+
+        function updatePdfNavigation() {
+            const prevBtn = document.getElementById('prevPdfBtn');
+            const nextBtn = document.getElementById('nextPdfBtn');
+            const pageInfo = document.getElementById('pdfPageInfo');
+            
+            prevBtn.disabled = currentPdfIndex === 0;
+            nextBtn.disabled = currentPdfIndex === allPdfs.length - 1;
+            pageInfo.textContent = `PDF ${currentPdfIndex + 1} de ${allPdfs.length}`;
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closePdfModal();
+            if (e.key === 'ArrowLeft') previousPdf();
+            if (e.key === 'ArrowRight') nextPdf();
+        });
+
+        // Initialize PDFs array and add click handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframes = document.querySelectorAll('iframe.pdf-viewer');
+            allPdfs = [];
+            
+            iframes.forEach((iframe, index) => {
+                const pdfPath = iframe.src;
+                const pdfName = pdfPath.split('/').pop();
+                
+                allPdfs.push({ path: pdfPath, name: pdfName });
+                
+                // Create wrapper for loading/fallback
+                const wrapper = document.createElement('div');
+                wrapper.className = 'pdf-container';
+                wrapper.id = `pdf-container-${index}`;
+                iframe.parentNode.insertBefore(wrapper, iframe);
+                wrapper.appendChild(iframe);
+                
+                // Create loading indicator
+                const loader = document.createElement('div');
+                loader.className = 'pdf-loading';
+                loader.innerHTML = '<div class="spinner"></div><p class="pdf-loading-text">Chargement du PDF...</p>';
+                wrapper.appendChild(loader);
+                
+                // Create fallback
+                const fallback = document.createElement('div');
+                fallback.className = 'pdf-fallback hidden';
+                fallback.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p><strong>Impossible de charger le PDF</strong></p>
+                    <p>${pdfName}</p>
+                    <a href="${pdfPath}" download>
+                        <i class="fas fa-download"></i> Télécharger le PDF
+                    </a>
+                `;
+                wrapper.appendChild(fallback);
+                
+                // Handle loading
+                iframe.addEventListener('load', function() {
+                    loader.classList.add('hidden');
+                });
+                
+                // Handle error
+                iframe.addEventListener('error', function() {
+                    loader.classList.add('hidden');
+                    fallback.classList.remove('hidden');
+                });
+                
+                // Timeout fallback (5 seconds)
+                setTimeout(() => {
+                    if (!loader.classList.contains('hidden') && !fallback.classList.contains('hidden')) {
+                        loader.classList.add('hidden');
+                        fallback.classList.remove('hidden');
+                    }
+                }, 5000);
+                
+                // Add click handler to open lightbox
+                wrapper.style.cursor = 'pointer';
+                wrapper.addEventListener('click', (e) => {
+                    // Don't open lightbox if clicking on download link
+                    if (e.target.closest('a')) return;
+                    currentPdfIndex = index;
+                    openPdfModal(pdfPath, pdfName);
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
