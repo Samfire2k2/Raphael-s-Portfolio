@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raphaël - Portfolio Marketing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <!-- CSS externe: tous les styles sont dans style.css -->
+</head>
+<body>
+    <script>
+        // Scrollbar color based on active section
+        const sections = document.querySelectorAll('section');
+        const html = document.documentElement;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const sectionId = entry.target.id;
+                    let sectionClass = 'section-accueil';
+                    
+                    if (sectionId === 'accueil') sectionClass = 'section-accueil';
+                    else if (sectionId === 'bio') sectionClass = 'section-bio';
+                    else if (sectionId === 'portfolio') sectionClass = 'section-bio';
+                    else if (sectionId === 'contact-footer') sectionClass = 'section-footer';
+                    
+                    html.className = sectionClass;
+                }
+            });
+        }, {
+            threshold: 0.3
+        });
+
+        sections.forEach(section => observer.observe(section));
+    </script>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="nav-brand">R.</div>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#bio">À propos</a></li>
+            <li><a href="#portfolio">Régions</a></li>
+            <li><a href="#contact-footer">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO / COVER PAGE -->
+    <section id="accueil" class="hero">
+        <canvas id="hero-canvas" class="hero-canvas"></canvas>
+        
+        <div class="hero-content">
+            <h1>Raphaël TESSIER</h1>
+            <p>Traducteur qui traduit des trucs</p>
+            <button class="cta-button" onclick="document.getElementById('bio').scrollIntoView({behavior: 'smooth'})">En savoir plus</button>
+        </div>
+    </section>
+
+    <!-- BIO SECTION -->
+    <section id="bio" class="bio-section">
+        <div class="bio-header">
+            <h2>À Propos</h2>
+        </div>
+        <div class="bio-text">
+            <p>
+                Je suis un professionnel de la traduction un peu comme C3P0 vous voyez. Je suis aussi passionné par la création de contenu engageant et la communication stratégique. Avec une expertise dans la traduction et une sensibilité pour le storytelling, je créé des campagnes qui résonnent avec les audiences.
+            </p>
+            <p>
+                Spécialisé dans la conception de projets marketing innovants, je combine stratégie créative et exécution rigoureuse pour transformer des idées en résultats mesurables. Vive l'argent ma gueule
+            </p>
+        </div>
+        <div class="bio-highlights">
+            <div class="highlight">
+                <div class="highlight-icon"><i class="fas fa-map-pin"></i></div>
+                <div class="highlight-content">
+                    <h3>Explorateur de cultures</h3>
+                    <p>Passionné par les voyages et la découverte de nouvelles perspectives à travers l'Europe</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
+                <div class="highlight-content">
+                    <h3>Créatif stratégique</h3>
+                    <p>Fusion de l'art et de la stratégie pour créer des campagnes mémorables et efficaces</p>
+                </div>
+            </div>
+            <div class="highlight">
+                <div class="highlight-icon"><i class="fas fa-bullseye"></i></div>
+                <div class="highlight-content">
+                    <h3>Orienté résultats</h3>
+                    <p>Chaque projet est une opportunité de créer de l'impact et de délivrer des valeurs réelles</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO SECTIONS GRID -->
+    <section id="portfolio" class="portfolio-section">
+        <div class="portfolio-header">
+            <h2>Explorez mes régions</h2>
+            <p>Cliquez sur une région pour découvrir mes projets</p>
+        </div>
+        <div class="portfolio-grid">
+            <a href="europe-centrale.html" class="portfolio-tile tile-centrale">
+                <div class="tile-icon"><i class="fas fa-mountain"></i></div>
+                <h3>Europe Centrale</h3>
+                <p>Bulgarie • Croatie • Monténégro • Roumanie</p>
+                <div class="tile-glow"></div>
+            </a>
+            <a href="europe-nord.html" class="portfolio-tile tile-nord">
+                <div class="tile-icon"><i class="fas fa-snowflake"></i></div>
+                <h3>Europe Nord</h3>
+                <p>Finlande • Suède • Norvège • Laponie</p>
+                <div class="tile-glow"></div>
+            </a>
+            <a href="europe-ouest.html" class="portfolio-tile tile-ouest">
+                <div class="tile-icon"><i class="fas fa-sun"></i></div>
+                <h3>Europe Ouest</h3>
+                <p>France • Espagne • Italie • Malte • Sardaigne</p>
+                <div class="tile-glow"></div>
+            </a>
+            <a href="iles.html" class="portfolio-tile tile-iles">
+                <div class="tile-icon"><i class="fas fa-water"></i></div>
+                <h3>Îles</h3>
+                <p>Açores • Baléares • Corse • Sicile</p>
+                <div class="tile-glow"></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTACT FOOTER -->
+    <footer id="contact-footer">
+        <div class="footer-content">
+            <h3>Prenons contact</h3>
+            <p>Je suis ouvert à de nouvelles collaborations et projets passionnants.</p>
+            <p>
+                <strong>Email:</strong> <a href="mailto:raphael@example.com">raphael@example.com</a> | 
+                <strong>Téléphone:</strong> <a href="tel:+33612345678">+33 6 67 67 67 67</a>
+            </p>
+            <p style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.95rem;">
+                &copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== LUCIOLES DANS HERO ====================
+        const heroCanvas = document.getElementById('hero-canvas');
+        const heroSection = document.getElementById('accueil');
+        const ctx = heroCanvas.getContext('2d');
+
+        let W, H;
+        function resizeHeroCanvas() {
+            W = heroCanvas.width = heroSection.offsetWidth;
+            H = heroCanvas.height = heroSection.offsetHeight;
+        }
+        resizeHeroCanvas();
+        window.addEventListener('resize', resizeHeroCanvas, { passive: true });
+
+        // ==================== LUCIOLES STATE ====================
+        const NUM_LUCIOLES = 4;
+        const lucioles = [];
+
+        class Luciole {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.wanderAngle = Math.random() * Math.PI * 2;
+                this.time = Math.random() * Math.PI * 2;
+                this.blinkPhase = Math.random() * Math.PI * 2;
+                this.trail = [];
+                this.particles = [];
+                this.color = ['#a855f7', '#9333ea', '#d946ef', '#e9d5ff'][Math.floor(Math.random() * 4)];
+            }
+
+            update() {
+                this.time += 0.012;
+                
+                // Wandering aléatoire
+                this.wanderAngle += (Math.random() - 0.5) * 0.12;
+                const wanderX = Math.cos(this.wanderAngle) * 1.5 + Math.sin(this.time * 0.8) * 0.8;
+                const wanderY = Math.sin(this.wanderAngle) * 1.2 + Math.cos(this.time * 0.6) * 0.6;
+                
+                this.vx = 0.95 * this.vx + 0.05 * wanderX;
+                this.vy = 0.95 * this.vy + 0.05 * wanderY;
+
+                // Limiter la vélocité
+                const speed = Math.hypot(this.vx, this.vy);
+                if (speed > 3) {
+                    this.vx = (this.vx / speed) * 3;
+                    this.vy = (this.vy / speed) * 3;
+                }
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Confinement avec rebond
+                if (this.x < 40 || this.x > W - 40) this.vx *= -0.8;
+                if (this.y < 40 || this.y > H - 40) this.vy *= -0.8;
+                this.x = Math.max(40, Math.min(W - 40, this.x));
+                this.y = Math.max(40, Math.min(H - 40, this.y));
+
+                // Trail
+                this.trail.unshift({ x: this.x, y: this.y });
+                if (this.trail.length > 20) this.trail.pop();
+
+                // Blink
+                this.blinkPhase += 0.05 + Math.sin(this.time * 0.5) * 0.02;
+
+                // Particles
+                if (Math.random() < 0.05) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const dist = 20 + Math.random() * 40;
+                    this.particles.push({
+                        x: this.x + Math.cos(angle) * dist,
+                        y: this.y + Math.sin(angle) * dist,
+                        vx: (Math.random() - 0.5) * 3,
+                        vy: (Math.random() - 0.5) * 3,
+                        life: 1
+                    });
+                }
+
+                // Update particles
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.life -= 0.025;
+                    p.vy += 0.1;
+                    if (p.life <= 0) this.particles.splice(i, 1);
+                }
+            }
+
+            draw() {
+                // Trail rendering - plus blurry et subtil
+                for (let i = this.trail.length - 1; i >= 0; i--) {
+                    const progress = 1 - i / this.trail.length;
+                    const alpha = progress * progress * 0.12;  // Réduit pour plus de subtilité
+                    const radius = progress * 8;  // Augmenté pour plus de blur
+                    const grd = ctx.createRadialGradient(this.trail[i].x, this.trail[i].y, 0, this.trail[i].x, this.trail[i].y, radius * 5);  // Augmenté
+                    grd.addColorStop(0, this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba'));
+                    grd.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                    ctx.beginPath();
+                    ctx.arc(this.trail[i].x, this.trail[i].y, radius * 5, 0, Math.PI * 2);
+                    ctx.fillStyle = grd;
+                    ctx.fill();
+                }
+
+                // Particles rendering
+                for (let i = this.particles.length - 1; i >= 0; i--) {
+                    const p = this.particles[i];
+                    const pGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 6);  // Augmenté pour blur
+                    pGrad.addColorStop(0, this.color.replace(')', `, ${p.life * 0.3})`).replace('rgb', 'rgba'));  // Réduit pour plus sombre
+                    pGrad.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+                    ctx.fillStyle = pGrad;
+                    ctx.fill();
+                }
+
+                // Glow system - plus blurry, plus sombre, plus glowing
+                const blink = Math.max(0.4, 0.65 + 0.35 * Math.sin(this.blinkPhase));  // Min réduit pour plus sombre
+                const glowR = 56 * blink;  // Augmenté pour plus de glow
+                
+                // Halo externe subtil - délicat et soft
+                const ambientGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR * 3.5);
+                ambientGlow.addColorStop(0, this.color.replace(')', `, ${0.5 * blink})`).replace('rgb', 'rgba'));
+                ambientGlow.addColorStop(0.5, this.color.replace(')', `, ${0.2 * blink})`).replace('rgb', 'rgba'));
+                ambientGlow.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, glowR * 3.5, 0, Math.PI * 2);
+                ctx.fillStyle = ambientGlow;
+                ctx.fill();
+
+                // Glow extérieur - subtil
+                const outer = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR * 1.8);
+                outer.addColorStop(0, this.color.replace(')', `, ${0.35 * blink})`).replace('rgb', 'rgba'));
+                outer.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, glowR * 1.8, 0, Math.PI * 2);
+                ctx.fillStyle = outer;
+                ctx.fill();
+
+                // Glow central - modéré
+                const mid = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 18 * blink);
+                mid.addColorStop(0, this.color.replace(')', `, ${0.55 * blink})`).replace('rgb', 'rgba'));
+                mid.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 18 * blink, 0, Math.PI * 2);
+                ctx.fillStyle = mid;
+                ctx.fill();
+
+                // Noyau lumineux - plus blurry et moins visible (plus sombre)
+                const core = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 12);  // Augmenté de 8 pour blur
+                core.addColorStop(0, 'rgba(220, 250, 255, 0.65)');  // Réduit de 0.95 à 0.65
+                core.addColorStop(1, 'rgba(129, 230, 255, 0)');
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
+                ctx.fillStyle = core;
+                ctx.fill();
+                
+                // Coeur blanc - plus petit et plus sombre
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';  // Réduit de 0.95 à 0.5
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);  // Réduit de 3 à 2
+                ctx.fill();
+            }
+        }
+
+        // Créer les lucioles
+        for (let i = 0; i < NUM_LUCIOLES; i++) {
+            const x = Math.random() * W;
+            const y = Math.random() * H;
+            lucioles.push(new Luciole(x, y));
+        }
+
+        // Animation loop
+        function animateHeroLucioles() {
+            ctx.clearRect(0, 0, W, H);
+            
+            lucioles.forEach(luciole => {
+                luciole.update();
+                luciole.draw();
+            });
+            
+            requestAnimationFrame(animateHeroLucioles);
+        }
+
+        animateHeroLucioles();
+    </script>
+
+</body>
+</html>
