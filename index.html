@@ -10,6 +10,61 @@
 </head>
 <body>
     <script>
+        // THEME TOGGLE - Initialize immediately to prevent flash
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        document.body.classList.add(savedTheme + '-mode');
+    </script>
+
+    <!-- DARK/LIGHT MODE TOGGLE -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="nav-brand">R.</a>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#bio">À propos</a></li>
+            <li><a href="#portfolio">Régions</a></li>
+            <li><a href="#contact-footer">Contact</a></li>
+        </ul>
+    </nav>
+
+    <script>
+        // THEME TOGGLE HANDLER
+        const themeToggle = document.getElementById('themeToggle');
+        
+        function updateThemeIcon() {
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                themeToggle.title = 'Passer au mode sombre';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                themeToggle.title = 'Passer au mode clair';
+            }
+        }
+        
+        updateThemeIcon();
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light-mode')) {
+                document.body.classList.remove('light-mode');
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            }
+            updateThemeIcon();
+        });
+    </script>
+
+    <script>
         // Scrollbar color based on active section
         const sections = document.querySelectorAll('section');
         const html = document.documentElement;
@@ -137,7 +192,7 @@
                 <strong>Email:</strong> <a href="mailto:raphael@example.com">raphael@example.com</a> | 
                 <strong>Téléphone:</strong> <a href="tel:+33612345678">+33 6 67 67 67 67</a>
             </p>
-            <p style="margin-top: 3rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.95rem;">
+            <p class="footer-copyright">
                 &copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés
             </p>
         </div>
