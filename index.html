@@ -28,6 +28,7 @@
             <li><a href="#bio">À propos</a></li>
             <li><a href="#portfolio">Régions</a></li>
             <li><a href="#contact-footer">Contact</a></li>
+            <li><button class="lang-toggle" id="langToggle" type="button">EN</button></li>
         </ul>
     </nav>
 
@@ -37,14 +38,15 @@
         
         function updateThemeIcon() {
             const icon = themeToggle.querySelector('i');
+            const currentLang = localStorage.getItem('lang') || 'fr';
             if (document.body.classList.contains('light-mode')) {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
-                themeToggle.title = 'Passer au mode sombre';
+                themeToggle.title = currentLang === 'fr' ? 'Passer au mode sombre' : 'Switch to dark mode';
             } else {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
-                themeToggle.title = 'Passer au mode clair';
+                themeToggle.title = currentLang === 'fr' ? 'Passer au mode clair' : 'Switch to light mode';
             }
         }
         
@@ -61,6 +63,153 @@
                 localStorage.setItem('theme', 'light');
             }
             updateThemeIcon();
+        });
+    </script>
+
+    <script>
+        // Language switch + page transition
+        document.addEventListener('DOMContentLoaded', () => {
+        const langToggle = document.getElementById('langToggle');
+        const savedLang = localStorage.getItem('lang') || 'fr';
+
+        function applyLang(lang) {
+            const t = {
+                fr: {
+                    navHome: 'Accueil', navAbout: 'À propos', navRegions: 'Régions', navContact: 'Contact',
+                    heroText: 'Traducteur qui traduit des trucs', heroBtn: 'En savoir plus',
+                    aboutTitle: 'À Propos',
+                    bio1: "Je suis un professionnel de la traduction un peu comme C3P0 vous voyez. Je suis aussi passionné par la création de contenu engageant et la communication stratégique. Avec une expertise dans la traduction et une sensibilité pour le storytelling, je créé des campagnes qui résonnent avec les audiences.",
+                    bio2: "Spécialisé dans la conception de projets marketing innovants, je combine stratégie créative et exécution rigoureuse pour transformer des idées en résultats mesurables. Vive l'argent ma gueule",
+                    h1: 'Explorateur de cultures', p1: "Passionné par les voyages et la découverte de nouvelles perspectives à travers l'Europe",
+                    h2: 'Créatif stratégique', p2: "Fusion de l'art et de la stratégie pour créer des campagnes mémorables et efficaces",
+                    h3: 'Orienté résultats', p3: "Chaque projet est une opportunité de créer de l'impact et de délivrer des valeurs réelles",
+                    portfolioTitle: 'Explorez mes régions', portfolioSub: 'Cliquez sur une région pour découvrir mes projets',
+                    tileCentral: 'Europe Centrale', tileNorth: 'Europe Nord', tileWest: 'Europe Ouest', tileIslands: 'Îles',
+                    listCentral: 'Bulgarie • Croatie • Monténégro • Roumanie',
+                    listNorth: 'Finlande • Suède • Norvège • Laponie',
+                    listWest: 'France • Espagne • Italie • Malte • Sardaigne',
+                    listIslands: 'Açores • Baléares • Corse • Sicile',
+                    contactTitle: 'Prenons contact', contactText: 'Je suis ouvert à de nouvelles collaborations et projets passionnants.',
+                    phoneLabel: 'Téléphone',
+                    rights: '&copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés',
+                    pageTitle: 'Raphaël - Portfolio Marketing',
+                    modeDark: 'Passer au mode sombre', modeLight: 'Passer au mode clair'
+                },
+                en: {
+                    navHome: 'Home', navAbout: 'About', navRegions: 'Regions', navContact: 'Contact',
+                    heroText: 'Translator crafting meaningful content', heroBtn: 'Learn more',
+                    aboutTitle: 'About',
+                    bio1: 'I am a translation professional, a bit like C3PO. I am also passionate about engaging content creation and strategic communication. With expertise in translation and a strong storytelling mindset, I build campaigns that connect with audiences.',
+                    bio2: 'Specialized in innovative marketing projects, I combine creative strategy and disciplined execution to turn ideas into measurable results.',
+                    h1: 'Culture Explorer', p1: 'Passionate about travel and discovering new perspectives across Europe',
+                    h2: 'Strategic Creative', p2: 'Blending art and strategy to craft memorable and effective campaigns',
+                    h3: 'Results Driven', p3: 'Every project is an opportunity to create impact and deliver real value',
+                    portfolioTitle: 'Explore My Regions', portfolioSub: 'Click on a region to discover my projects',
+                    tileCentral: 'Central Europe', tileNorth: 'Northern Europe', tileWest: 'Western Europe', tileIslands: 'Islands',
+                    listCentral: 'Bulgaria • Croatia • Montenegro • Romania',
+                    listNorth: 'Finland • Sweden • Norway • Lapland',
+                    listWest: 'France • Spain • Italy • Malta • Sardinia',
+                    listIslands: 'Azores • Balearic Islands • Corsica • Sicily',
+                    contactTitle: 'Let us connect', contactText: 'I am open to new collaborations and exciting projects.',
+                    phoneLabel: 'Phone',
+                    rights: '&copy; 2026 Raphaël - Portfolio Marketing | All rights reserved',
+                    pageTitle: 'Raphaël - Marketing Portfolio',
+                    modeDark: 'Switch to dark mode', modeLight: 'Switch to light mode'
+                }
+            };
+
+            const c = t[lang];
+            const nav = document.querySelectorAll('.nav-links a');
+            if (nav.length >= 4) {
+                nav[0].textContent = c.navHome;
+                nav[1].textContent = c.navAbout;
+                nav[2].textContent = c.navRegions;
+                nav[3].textContent = c.navContact;
+            }
+
+            document.querySelector('.hero-content p').textContent = c.heroText;
+            document.querySelector('.hero-content .cta-button').textContent = c.heroBtn;
+            document.querySelector('.bio-header h2').textContent = c.aboutTitle;
+
+            const bioParagraphs = document.querySelectorAll('.bio-text p');
+            if (bioParagraphs.length >= 2) {
+                bioParagraphs[0].textContent = c.bio1;
+                bioParagraphs[1].textContent = c.bio2;
+            }
+
+            const highlights = document.querySelectorAll('.highlight-content');
+            if (highlights.length >= 3) {
+                highlights[0].querySelector('h3').textContent = c.h1;
+                highlights[0].querySelector('p').textContent = c.p1;
+                highlights[1].querySelector('h3').textContent = c.h2;
+                highlights[1].querySelector('p').textContent = c.p2;
+                highlights[2].querySelector('h3').textContent = c.h3;
+                highlights[2].querySelector('p').textContent = c.p3;
+            }
+
+            document.querySelector('.portfolio-header h2').textContent = c.portfolioTitle;
+            document.querySelector('.portfolio-header p').textContent = c.portfolioSub;
+
+            const tiles = document.querySelectorAll('.portfolio-tile h3');
+            if (tiles.length >= 4) {
+                tiles[0].textContent = c.tileCentral;
+                tiles[1].textContent = c.tileNorth;
+                tiles[2].textContent = c.tileWest;
+                tiles[3].textContent = c.tileIslands;
+            }
+
+            const tileLists = document.querySelectorAll('.portfolio-tile p');
+            if (tileLists.length >= 4) {
+                tileLists[0].textContent = c.listCentral;
+                tileLists[1].textContent = c.listNorth;
+                tileLists[2].textContent = c.listWest;
+                tileLists[3].textContent = c.listIslands;
+            }
+
+            document.querySelector('#contact-footer h3').textContent = c.contactTitle;
+            document.querySelector('#contact-footer p').textContent = c.contactText;
+            const footerContact = document.querySelectorAll('#contact-footer p')[1];
+            if (footerContact) {
+                footerContact.innerHTML = `<strong>Email:</strong> <a href="mailto:raphael@example.com">raphael@example.com</a> | <strong>${c.phoneLabel}:</strong> <a href="tel:+33612345678">+33 6 67 67 67 67</a>`;
+            }
+            const rights = document.querySelector('.footer-copyright');
+            if (rights) rights.innerHTML = c.rights;
+
+            document.title = c.pageTitle;
+
+            if (themeToggle) {
+                themeToggle.title = document.body.classList.contains('light-mode') ? c.modeDark : c.modeLight;
+            }
+
+            langToggle.textContent = lang === 'fr' ? 'EN' : 'FR';
+            document.documentElement.lang = lang;
+        }
+
+        applyLang(savedLang);
+
+        langToggle.addEventListener('click', () => {
+            const nextLang = (localStorage.getItem('lang') || 'fr') === 'fr' ? 'en' : 'fr';
+            localStorage.setItem('lang', nextLang);
+            applyLang(nextLang);
+        });
+
+        document.body.classList.add('page-enter');
+
+        document.addEventListener('click', (event) => {
+            const link = event.target.closest('a[href]');
+            if (!link) return;
+            if (link.hasAttribute('download')) return;
+
+            const target = new URL(link.getAttribute('href'), window.location.href);
+            if (target.origin !== window.location.origin) return;
+            if (target.pathname === window.location.pathname) return;
+
+            event.preventDefault();
+            document.body.classList.add('is-transitioning');
+            setTimeout(() => {
+                window.location.href = target.href;
+            }, 220);
+        });
         });
     </script>
 
@@ -89,17 +238,6 @@
 
         sections.forEach(section => observer.observe(section));
     </script>
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="nav-brand">R.</div>
-        <ul class="nav-links">
-            <li><a href="#accueil">Accueil</a></li>
-            <li><a href="#bio">À propos</a></li>
-            <li><a href="#portfolio">Régions</a></li>
-            <li><a href="#contact-footer">Contact</a></li>
-        </ul>
-    </nav>
-
     <!-- HERO / COVER PAGE -->
     <section id="accueil" class="hero">
         <canvas id="hero-canvas" class="hero-canvas"></canvas>
@@ -199,7 +337,7 @@
     </footer>
 
     <script>
-        // ==================== LUCIOLES DANS HERO ====================
+        // ==================== LUCIOLES GLOW DANS HERO ====================
         const heroCanvas = document.getElementById('hero-canvas');
         const heroSection = document.getElementById('accueil');
         const ctx = heroCanvas.getContext('2d');
@@ -212,155 +350,127 @@
         resizeHeroCanvas();
         window.addEventListener('resize', resizeHeroCanvas, { passive: true });
 
-        // ==================== LUCIOLES STATE ====================
-        const NUM_LUCIOLES = 4;
+        // ==================== LUCIOLES SIMPLIFIÉES ====================
+        const NUM_LUCIOLES = 6;
         const lucioles = [];
 
-        class Luciole {
+        function hexToRgba(hex, alpha) {
+            const cleanHex = hex.replace('#', '');
+            const fullHex = cleanHex.length === 3
+                ? cleanHex.split('').map(c => c + c).join('')
+                : cleanHex;
+            const intVal = parseInt(fullHex, 16);
+            const r = (intVal >> 16) & 255;
+            const g = (intVal >> 8) & 255;
+            const b = intVal & 255;
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        class LuciolGlow {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.vx = (Math.random() - 0.5) * 2;
-                this.vy = (Math.random() - 0.5) * 2;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
                 this.wanderAngle = Math.random() * Math.PI * 2;
                 this.time = Math.random() * Math.PI * 2;
-                this.blinkPhase = Math.random() * Math.PI * 2;
-                this.trail = [];
-                this.particles = [];
-                this.color = ['#a855f7', '#9333ea', '#d946ef', '#e9d5ff'][Math.floor(Math.random() * 4)];
+                this.glowPhase = Math.random() * Math.PI * 2;
+                this.paletteDark = ['#1e3a8a', '#312e81', '#4338ca', '#5b21b6', '#7c3aed'];
+                this.paletteLight = ['#4f46e5', '#6366f1', '#7c3aed', '#8b5cf6', '#a78bfa'];
+                this.colorIndex = Math.floor(Math.random() * this.paletteDark.length);
+                this.speedFactor = 0.7 + Math.random() * 0.5;
+                this.twinkleCooldown = 40 + Math.random() * 100;
+                this.currentGlow = 0.4 + Math.random() * 0.2;
+                this.targetGlow = this.currentGlow;
             }
 
             update() {
-                this.time += 0.012;
+                this.time += 0.01;
                 
-                // Wandering aléatoire
-                this.wanderAngle += (Math.random() - 0.5) * 0.12;
-                const wanderX = Math.cos(this.wanderAngle) * 1.5 + Math.sin(this.time * 0.8) * 0.8;
-                const wanderY = Math.sin(this.wanderAngle) * 1.2 + Math.cos(this.time * 0.6) * 0.6;
+                // Mouvement doux, légèrement erratique, pour un rendu naturel.
+                this.wanderAngle += (Math.random() - 0.5) * 0.08;
+                const wanderX = Math.cos(this.wanderAngle) * 1.2;
+                const wanderY = Math.sin(this.wanderAngle) * 1;
+                const microX = Math.cos(this.time * 1.1 + this.glowPhase) * 0.35;
+                const microY = Math.sin(this.time * 0.9 + this.glowPhase) * 0.3;
                 
-                this.vx = 0.95 * this.vx + 0.05 * wanderX;
-                this.vy = 0.95 * this.vy + 0.05 * wanderY;
-
-                // Limiter la vélocité
-                const speed = Math.hypot(this.vx, this.vy);
-                if (speed > 3) {
-                    this.vx = (this.vx / speed) * 3;
-                    this.vy = (this.vy / speed) * 3;
-                }
+                this.vx = 0.93 * this.vx + 0.07 * (wanderX * this.speedFactor + microX);
+                this.vy = 0.93 * this.vy + 0.07 * (wanderY * this.speedFactor + microY);
 
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Confinement avec rebond
-                if (this.x < 40 || this.x > W - 40) this.vx *= -0.8;
-                if (this.y < 40 || this.y > H - 40) this.vy *= -0.8;
-                this.x = Math.max(40, Math.min(W - 40, this.x));
-                this.y = Math.max(40, Math.min(H - 40, this.y));
+                // Confinement
+                if (this.x < 110 || this.x > W - 110) this.vx *= -0.85;
+                if (this.y < 110 || this.y > H - 110) this.vy *= -0.85;
+                this.x = Math.max(110, Math.min(W - 110, this.x));
+                this.y = Math.max(110, Math.min(H - 110, this.y));
 
-                // Trail
-                this.trail.unshift({ x: this.x, y: this.y });
-                if (this.trail.length > 20) this.trail.pop();
-
-                // Blink
-                this.blinkPhase += 0.05 + Math.sin(this.time * 0.5) * 0.02;
-
-                // Particles
-                if (Math.random() < 0.05) {
-                    const angle = Math.random() * Math.PI * 2;
-                    const dist = 20 + Math.random() * 40;
-                    this.particles.push({
-                        x: this.x + Math.cos(angle) * dist,
-                        y: this.y + Math.sin(angle) * dist,
-                        vx: (Math.random() - 0.5) * 3,
-                        vy: (Math.random() - 0.5) * 3,
-                        life: 1
-                    });
+                // Scintillement progressif: on change une cible, puis on l'atteint en douceur.
+                this.twinkleCooldown -= 1;
+                if (this.twinkleCooldown <= 0) {
+                    this.targetGlow = 0.45 + Math.random() * 0.5;
+                    this.twinkleCooldown = 50 + Math.random() * 120;
                 }
 
-                // Update particles
-                for (let i = this.particles.length - 1; i >= 0; i--) {
-                    const p = this.particles[i];
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.life -= 0.025;
-                    p.vy += 0.1;
-                    if (p.life <= 0) this.particles.splice(i, 1);
-                }
+                this.currentGlow += (this.targetGlow - this.currentGlow) * 0.03;
+                this.glowPhase += 0.02;
             }
 
             draw() {
-                // Trail rendering - plus blurry et subtil
-                for (let i = this.trail.length - 1; i >= 0; i--) {
-                    const progress = 1 - i / this.trail.length;
-                    const alpha = progress * progress * 0.12;  // Réduit pour plus de subtilité
-                    const radius = progress * 8;  // Augmenté pour plus de blur
-                    const grd = ctx.createRadialGradient(this.trail[i].x, this.trail[i].y, 0, this.trail[i].x, this.trail[i].y, radius * 5);  // Augmenté
-                    grd.addColorStop(0, this.color.replace(')', `, ${alpha})`).replace('rgb', 'rgba'));
-                    grd.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
-                    ctx.beginPath();
-                    ctx.arc(this.trail[i].x, this.trail[i].y, radius * 5, 0, Math.PI * 2);
-                    ctx.fillStyle = grd;
-                    ctx.fill();
-                }
+                const isLightMode = document.body.classList.contains('light-mode');
+                const glowColor = isLightMode
+                    ? this.paletteLight[this.colorIndex]
+                    : this.paletteDark[this.colorIndex];
 
-                // Particles rendering
-                for (let i = this.particles.length - 1; i >= 0; i--) {
-                    const p = this.particles[i];
-                    const pGrad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 6);  // Augmenté pour blur
-                    pGrad.addColorStop(0, this.color.replace(')', `, ${p.life * 0.3})`).replace('rgb', 'rgba'));  // Réduit pour plus sombre
-                    pGrad.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
-                    ctx.fillStyle = pGrad;
-                    ctx.fill();
-                }
+                // Pulse fin + interpolation progressive pour un scintillement naturel.
+                const subtlePulse = 0.08 * Math.sin(this.glowPhase * 2.2);
+                const glowIntensity = isLightMode
+                    ? Math.max(0.25, Math.min(0.82, this.currentGlow + subtlePulse - 0.06))
+                    : Math.max(0.3, Math.min(1, this.currentGlow + subtlePulse));
+                const glowScale = 1 + 0.08 * Math.sin(this.glowPhase * 1.7);
+                const megaRadius = (isLightMode ? 220 : 260) * glowScale;
+                const largeRadius = (isLightMode ? 140 : 170) * glowScale;
+                const coreRadius = (isLightMode ? 72 : 90) * glowScale;
 
-                // Glow system - plus blurry, plus sombre, plus glowing
-                const blink = Math.max(0.4, 0.65 + 0.35 * Math.sin(this.blinkPhase));  // Min réduit pour plus sombre
-                const glowR = 56 * blink;  // Augmenté pour plus de glow
-                
-                // Halo externe subtil - délicat et soft
-                const ambientGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR * 3.5);
-                ambientGlow.addColorStop(0, this.color.replace(')', `, ${0.5 * blink})`).replace('rgb', 'rgba'));
-                ambientGlow.addColorStop(0.5, this.color.replace(')', `, ${0.2 * blink})`).replace('rgb', 'rgba'));
-                ambientGlow.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                ctx.save();
+                ctx.globalCompositeOperation = isLightMode ? 'screen' : 'lighter';
+
+                const megaGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, megaRadius);
+                megaGlow.addColorStop(0, hexToRgba(glowColor, (isLightMode ? 0.24 : 0.35) * glowIntensity));
+                megaGlow.addColorStop(0.35, hexToRgba(glowColor, (isLightMode ? 0.12 : 0.18) * glowIntensity));
+                megaGlow.addColorStop(1, hexToRgba(glowColor, 0));
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, glowR * 3.5, 0, Math.PI * 2);
-                ctx.fillStyle = ambientGlow;
+                ctx.arc(this.x, this.y, megaRadius, 0, Math.PI * 2);
+                ctx.fillStyle = megaGlow;
                 ctx.fill();
 
-                // Glow extérieur - subtil
-                const outer = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, glowR * 1.8);
-                outer.addColorStop(0, this.color.replace(')', `, ${0.35 * blink})`).replace('rgb', 'rgba'));
-                outer.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                const largeGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, largeRadius);
+                largeGlow.addColorStop(0, hexToRgba(glowColor, (isLightMode ? 0.34 : 0.55) * glowIntensity));
+                largeGlow.addColorStop(0.45, hexToRgba(glowColor, (isLightMode ? 0.16 : 0.22) * glowIntensity));
+                largeGlow.addColorStop(1, hexToRgba(glowColor, 0));
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, glowR * 1.8, 0, Math.PI * 2);
-                ctx.fillStyle = outer;
+                ctx.arc(this.x, this.y, largeRadius, 0, Math.PI * 2);
+                ctx.fillStyle = largeGlow;
                 ctx.fill();
 
-                // Glow central - modéré
-                const mid = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 18 * blink);
-                mid.addColorStop(0, this.color.replace(')', `, ${0.55 * blink})`).replace('rgb', 'rgba'));
-                mid.addColorStop(1, this.color.replace(')', ', 0)').replace('rgb', 'rgba'));
+                const coreGlow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, coreRadius);
+                coreGlow.addColorStop(0, hexToRgba(glowColor, (isLightMode ? 0.48 : 0.75) * glowIntensity));
+                coreGlow.addColorStop(0.6, hexToRgba(glowColor, (isLightMode ? 0.2 : 0.28) * glowIntensity));
+                coreGlow.addColorStop(1, hexToRgba(glowColor, 0));
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 18 * blink, 0, Math.PI * 2);
-                ctx.fillStyle = mid;
+                ctx.arc(this.x, this.y, coreRadius, 0, Math.PI * 2);
+                ctx.fillStyle = coreGlow;
                 ctx.fill();
 
-                // Noyau lumineux - plus blurry et moins visible (plus sombre)
-                const core = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, 12);  // Augmenté de 8 pour blur
-                core.addColorStop(0, 'rgba(220, 250, 255, 0.65)');  // Réduit de 0.95 à 0.65
-                core.addColorStop(1, 'rgba(129, 230, 255, 0)');
+                ctx.fillStyle = isLightMode
+                    ? `rgba(255, 255, 255, ${0.62 * glowIntensity})`
+                    : `rgba(255, 255, 255, ${0.9 * glowIntensity})`;
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, 12, 0, Math.PI * 2);
-                ctx.fillStyle = core;
+                ctx.arc(this.x, this.y, isLightMode ? 5.5 : 7, 0, Math.PI * 2);
                 ctx.fill();
-                
-                // Coeur blanc - plus petit et plus sombre
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';  // Réduit de 0.95 à 0.5
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);  // Réduit de 3 à 2
-                ctx.fill();
+
+                ctx.restore();
             }
         }
 
@@ -368,7 +478,7 @@
         for (let i = 0; i < NUM_LUCIOLES; i++) {
             const x = Math.random() * W;
             const y = Math.random() * H;
-            lucioles.push(new Luciole(x, y));
+            lucioles.push(new LuciolGlow(x, y));
         }
 
         // Animation loop

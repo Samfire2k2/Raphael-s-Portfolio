@@ -27,6 +27,7 @@
             <li><a href="index.html">Accueil</a></li>
             <li><a href="index.html#portfolio">Régions</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><button class="lang-toggle" id="langToggle" type="button">EN</button></li>
         </ul>
     </nav>
 
@@ -50,14 +51,15 @@
         
         function updateThemeIcon() {
             const icon = themeToggle.querySelector('i');
+            const currentLang = localStorage.getItem('lang') || 'fr';
             if (document.body.classList.contains('light-mode')) {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
-                themeToggle.title = 'Passer au mode sombre';
+                themeToggle.title = currentLang === 'fr' ? 'Passer au mode sombre' : 'Switch to dark mode';
             } else {
                 icon.classList.remove('fa-sun');
                 icon.classList.add('fa-moon');
-                themeToggle.title = 'Passer au mode clair';
+                themeToggle.title = currentLang === 'fr' ? 'Passer au mode clair' : 'Switch to light mode';
             }
         }
         
@@ -74,6 +76,146 @@
                 localStorage.setItem('theme', 'light');
             }
             updateThemeIcon();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+        const langToggle = document.getElementById('langToggle');
+        const sectionTitle = document.querySelector('.section-title');
+        const sectionSubtitle = document.querySelector('.section-subtitle');
+
+        function applyRegionalLanguage(lang) {
+            const t = {
+                fr: {
+                    navHome: 'Accueil', navRegions: 'Régions', navContact: 'Contact',
+                    crumbHome: 'Accueil', crumbRegions: 'Régions', crumbCurrent: 'Europe Ouest',
+                    back: 'Retour au portfolio',
+                    title: 'Europe Ouest',
+                    subtitle: 'France • Espagne • Italie • Malte • Sardaigne',
+                    footerTitle: 'Prenons contact',
+                    footerText: 'Je suis ouvert à de nouvelles collaborations et projets passionnants.',
+                    phoneLabel: 'Téléphone',
+                    rights: '&copy; 2026 Raphaël - Portfolio Marketing | Tous droits réservés',
+                    pageTitle: 'Europe Ouest - Raphaël Portfolio',
+                    cards: [
+                        { title: 'France', text: 'De Paris aux Alpes, la France conjugue sophistication urbaine et beauté naturelle intemporelle.' },
+                        { title: 'Espagne', text: 'Soleil, passion et culture : l\'Espagne vous envoûtera avec ses villes dynamiques et ses côtes ensoleillées.' },
+                        { title: 'Italie', text: 'Art, gastronomie et dolce vita : l\'Italie est une symphonie de beauté et d\'élégance.' },
+                        { title: 'Malte', text: 'Entre histoire antique et eaux cristallines, Malte offre une escapade méditerranéenne inoubliable.' },
+                        { title: 'Sardaigne', text: 'Plages paradisiaques et villages pittoresques font de la Sardaigne une destination de rêve.' }
+                    ],
+                    download: 'Télécharger', viewer: 'Visionneuse PDF',
+                    loading: 'Chargement du PDF...', preview: 'Miniature', loaded: 'Charge',
+                    fallbackTitle: 'Impossible de charger le PDF', fallbackDownload: 'Télécharger le PDF'
+                },
+                en: {
+                    navHome: 'Home', navRegions: 'Regions', navContact: 'Contact',
+                    crumbHome: 'Home', crumbRegions: 'Regions', crumbCurrent: 'Western Europe',
+                    back: 'Back to portfolio',
+                    title: 'Western Europe',
+                    subtitle: 'France • Spain • Italy • Malta • Sardinia',
+                    footerTitle: 'Let us connect',
+                    footerText: 'I am open to new collaborations and exciting projects.',
+                    phoneLabel: 'Phone',
+                    rights: '&copy; 2026 Raphaël - Portfolio Marketing | All rights reserved',
+                    pageTitle: 'Western Europe - Raphaël Portfolio',
+                    cards: [
+                        { title: 'France', text: 'From Paris to the Alps, France blends urban sophistication with timeless natural beauty.' },
+                        { title: 'Spain', text: 'Sun, passion, and culture: Spain will captivate you with vibrant cities and sunny coasts.' },
+                        { title: 'Italy', text: 'Art, gastronomy, and dolce vita: Italy is a symphony of beauty and elegance.' },
+                        { title: 'Malta', text: 'Between ancient history and crystal waters, Malta offers an unforgettable Mediterranean escape.' },
+                        { title: 'Sardinia', text: 'Paradise beaches and picturesque villages make Sardinia a dream destination.' }
+                    ],
+                    download: 'Download', viewer: 'PDF Viewer',
+                    loading: 'Loading PDF...', preview: 'Preview', loaded: 'Loaded',
+                    fallbackTitle: 'Unable to load PDF', fallbackDownload: 'Download PDF'
+                }
+            };
+            const c = t[lang];
+            const nav = document.querySelectorAll('.nav-links a');
+            nav[0].textContent = c.navHome;
+            nav[1].textContent = c.navRegions;
+            nav[2].textContent = c.navContact;
+
+            const breadcrumbLinks = document.querySelectorAll('.breadcrumb a');
+            breadcrumbLinks[0].textContent = c.crumbHome;
+            breadcrumbLinks[1].textContent = c.crumbRegions;
+            document.querySelector('.breadcrumb span:last-child').textContent = c.crumbCurrent;
+
+            const backBtn = document.querySelector('.back-to-portfolio');
+            backBtn.innerHTML = `<i class="fas fa-arrow-left"></i> ${c.back}`;
+
+            sectionTitle.innerHTML = `<i class="fas fa-sun"></i> ${c.title}`;
+            sectionSubtitle.textContent = c.subtitle;
+
+            document.querySelector('#contact h3').textContent = c.footerTitle;
+            document.querySelector('#contact p').textContent = c.footerText;
+            const footerLine = document.querySelectorAll('#contact p')[1];
+            if (footerLine) {
+                footerLine.innerHTML = `<strong>Email:</strong> <a href="mailto:raphael@example.com">raphael@example.com</a> | <strong>${c.phoneLabel}:</strong> <a href="tel:+33612345678">+33 6 12 34 56 78</a>`;
+            }
+            const rights = document.querySelector('.footer-copyright');
+            if (rights) rights.innerHTML = c.rights;
+
+            const cards = document.querySelectorAll('.post-card');
+            cards.forEach((card, idx) => {
+                if (!c.cards[idx]) return;
+                card.querySelector('h3').textContent = c.cards[idx].title;
+                card.querySelector('p').textContent = c.cards[idx].text;
+            });
+
+            document.getElementById('pdfModalTitle').textContent = c.viewer;
+            document.querySelector('#pdfDownloadBtn').innerHTML = `<i class="fas fa-download"></i> ${c.download}`;
+            document.querySelectorAll('.pdf-loading-text').forEach((el) => {
+                el.textContent = c.loading;
+            });
+            document.querySelectorAll('.pdf-preview-label').forEach((el) => {
+                el.textContent = c.preview;
+            });
+            document.querySelectorAll('.pdf-status-ready').forEach((el) => {
+                el.textContent = c.loaded;
+            });
+            document.querySelectorAll('.pdf-fallback').forEach((fallback) => {
+                const pdfName = fallback.dataset.pdfName || '';
+                fallback.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p><strong>${c.fallbackTitle}</strong></p>
+                    <p>${pdfName}</p>
+                    <a href="${fallback.dataset.pdfPath}" download>
+                        <i class="fas fa-download"></i> ${c.fallbackDownload}
+                    </a>
+                `;
+            });
+
+            document.title = c.pageTitle;
+
+            langToggle.textContent = lang === 'fr' ? 'EN' : 'FR';
+            document.documentElement.lang = lang;
+            updateThemeIcon();
+        }
+
+        applyRegionalLanguage(localStorage.getItem('lang') || 'fr');
+
+        langToggle.addEventListener('click', () => {
+            const nextLang = (localStorage.getItem('lang') || 'fr') === 'fr' ? 'en' : 'fr';
+            localStorage.setItem('lang', nextLang);
+            applyRegionalLanguage(nextLang);
+        });
+
+        document.body.classList.add('page-enter');
+
+        document.addEventListener('click', (event) => {
+            const link = event.target.closest('a[href]');
+            if (!link) return;
+            if (link.hasAttribute('download')) return;
+            const target = new URL(link.getAttribute('href'), window.location.href);
+            if (target.origin !== window.location.origin) return;
+            if (target.pathname === window.location.pathname) return;
+            event.preventDefault();
+            document.body.classList.add('is-transitioning');
+            setTimeout(() => { window.location.href = target.href; }, 220);
+        });
         });
     </script>
 
@@ -141,18 +283,55 @@
         let allPdfs = [];
         let currentPdfIndex = 0;
 
+        function formatPdfDisplayName(fileName) {
+            const rawName = (fileName || '').split('?')[0].split('#')[0];
+            try {
+                return decodeURIComponent(rawName);
+            } catch {
+                return rawName;
+            }
+        }
+
+        async function forceDownloadPdf(pdfPath, pdfName) {
+            const safeName = formatPdfDisplayName(pdfName) || 'document.pdf';
+            try {
+                const response = await fetch(pdfPath, { credentials: 'same-origin' });
+                if (!response.ok) throw new Error('Fetch failed');
+                const blob = await response.blob();
+                const objectUrl = URL.createObjectURL(blob);
+                const tempLink = document.createElement('a');
+                tempLink.href = objectUrl;
+                tempLink.download = safeName;
+                document.body.appendChild(tempLink);
+                tempLink.click();
+                tempLink.remove();
+                URL.revokeObjectURL(objectUrl);
+            } catch {
+                const fallbackLink = document.createElement('a');
+                fallbackLink.href = pdfPath;
+                fallbackLink.download = safeName;
+                fallbackLink.rel = 'noopener';
+                document.body.appendChild(fallbackLink);
+                fallbackLink.click();
+                fallbackLink.remove();
+            }
+        }
+
         function openPdfModal(pdfPath, pdfName) {
             const modal = document.getElementById('pdfModal');
             const iframe = document.getElementById('pdfModalIframe');
             const title = document.getElementById('pdfModalTitle');
             const downloadBtn = document.getElementById('pdfDownloadBtn');
             const pageInfo = document.getElementById('pdfPageInfo');
+            const displayName = formatPdfDisplayName(pdfName);
             
             // Set content
             iframe.src = pdfPath;
-            title.textContent = pdfName;
+            title.textContent = displayName;
             downloadBtn.href = pdfPath;
-            downloadBtn.download = pdfName;
+            downloadBtn.download = displayName;
+            downloadBtn.dataset.pdfPath = pdfPath;
+            downloadBtn.dataset.pdfName = displayName;
             
             // Update navigation
             updatePdfNavigation();
@@ -186,10 +365,13 @@
             const prevBtn = document.getElementById('prevPdfBtn');
             const nextBtn = document.getElementById('nextPdfBtn');
             const pageInfo = document.getElementById('pdfPageInfo');
+            const lang = localStorage.getItem('lang') || 'fr';
             
             prevBtn.disabled = currentPdfIndex === 0;
             nextBtn.disabled = currentPdfIndex === allPdfs.length - 1;
-            pageInfo.textContent = `PDF ${currentPdfIndex + 1} de ${allPdfs.length}`;
+            pageInfo.textContent = lang === 'fr'
+                ? `PDF ${currentPdfIndex + 1} de ${allPdfs.length}`
+                : `PDF ${currentPdfIndex + 1} of ${allPdfs.length}`;
         }
 
         // Close modal on ESC key
@@ -201,6 +383,15 @@
 
         // Initialize PDFs array and add click handlers
         document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('pdfDownloadBtn');
+            downloadBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const pdfPath = downloadBtn.dataset.pdfPath || downloadBtn.href;
+                const pdfName = downloadBtn.dataset.pdfName || downloadBtn.download;
+                if (!pdfPath) return;
+                forceDownloadPdf(pdfPath, pdfName);
+            });
+
             const iframes = document.querySelectorAll('iframe.pdf-viewer');
             allPdfs = [];
             
@@ -210,59 +401,36 @@
                 
                 allPdfs.push({ path: pdfPath, name: pdfName });
                 
-                // Create wrapper for loading/fallback
+                // Create wrapper for thumbnail-only preview
                 const wrapper = document.createElement('div');
                 wrapper.className = 'pdf-container';
                 wrapper.id = `pdf-container-${index}`;
                 iframe.parentNode.insertBefore(wrapper, iframe);
-                wrapper.appendChild(iframe);
-                
-                // Create loading indicator
-                const loader = document.createElement('div');
-                loader.className = 'pdf-loading';
-                loader.innerHTML = '<div class="spinner"></div><p class="pdf-loading-text">Chargement du PDF...</p>';
-                wrapper.appendChild(loader);
-                
-                // Create fallback
-                const fallback = document.createElement('div');
-                fallback.className = 'pdf-fallback hidden';
-                fallback.innerHTML = `
-                    <i class="fas fa-exclamation-circle"></i>
-                    <p><strong>Impossible de charger le PDF</strong></p>
-                    <p>${pdfName}</p>
-                    <a href="${pdfPath}" download>
-                        <i class="fas fa-download"></i> Télécharger le PDF
-                    </a>
+
+                // Create mini preview
+                const preview = document.createElement('div');
+                preview.className = 'pdf-preview';
+                preview.innerHTML = `
+                    <iframe src="${pdfPath}#toolbar=0&navpanes=0&scrollbar=0&page=1&view=FitH"></iframe>
+                    <span class="pdf-preview-label">Miniature</span>
                 `;
-                wrapper.appendChild(fallback);
-                
-                // Handle loading
-                iframe.addEventListener('load', function() {
-                    loader.classList.add('hidden');
-                });
-                
-                // Handle error
-                iframe.addEventListener('error', function() {
-                    loader.classList.add('hidden');
-                    fallback.classList.remove('hidden');
-                });
-                
-                // Timeout fallback (5 seconds)
-                setTimeout(() => {
-                    if (!loader.classList.contains('hidden') && !fallback.classList.contains('hidden')) {
-                        loader.classList.add('hidden');
-                        fallback.classList.remove('hidden');
-                    }
-                }, 5000);
+                wrapper.appendChild(preview);
+
+                // Remove embedded PDF viewer from page content (thumbnail only)
+                iframe.remove();
                 
                 // Add click handler to open lightbox
                 wrapper.style.cursor = 'pointer';
                 wrapper.addEventListener('click', (e) => {
                     // Don't open lightbox if clicking on download link
                     if (e.target.closest('a')) return;
+                    if (e.target.closest('.pdf-preview iframe')) return;
                     currentPdfIndex = index;
                     openPdfModal(pdfPath, pdfName);
                 });
+
+                const lang = localStorage.getItem('lang') || 'fr';
+                preview.querySelector('.pdf-preview-label').textContent = lang === 'fr' ? 'Miniature' : 'Preview';
             });
         });
     </script>
